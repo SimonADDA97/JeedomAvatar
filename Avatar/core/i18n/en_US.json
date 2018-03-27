@@ -1,0 +1,13 @@
+{
+    "plugins/networks/plugin_info/info.xml": {
+        "Plugin permettant la gestion réseaux des équipements (ping et wake on lan)": "Plugin for managing network equipment (ping and wake on lan)",
+        "Aucune": "None"
+    },
+    "plugins/networks/desktop/php/panel.php": {
+        "Liste objets": "Objects list",
+        "Rechercher": "Search"
+    },
+    "plugins/networks/desktop/js/panel.js": {
+        "Vous êtes en mode édition vous pouvez redimensionner les widgets": "Your are in edit mode an can resize widgets"
+    }
+}

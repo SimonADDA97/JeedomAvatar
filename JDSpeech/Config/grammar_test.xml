@@ -1,0 +1,116 @@
+﻿<grammar tag-format="semantics/1.0" version="1.0" xml:lang="fr-FR" root="Temperatures"
+ xmlns="http://www.w3.org/2001/06/grammar">
+
+  <rule id="Temperatures" scope="public">
+
+    <tag>out.command="";out.type="";out.addlocal="";out.reply="";out.replynext=""; </tag>
+
+    <item>Hey Lija</item>
+
+    <one-of>
+      <item>quelle est la température </item>
+      <item>donne moi la température </item>
+      <item>combien fait t'il </item>
+      <item>combien il fait </item>
+      <item>quelle température fait t'il </item>
+      <item>j'ai chaud </item>
+      <item>j'ai froid </item>
+    </one-of>
+    
+    <tag>out.command="température ";out.reply="il fait {info1} degrés";</tag>
+
+    <one-of>
+      <item>du </item>
+      <item>de la </item>
+      <item>de l' </item>
+      <item>dans le </item>
+      <item>dans la </item>
+      <item>dans l' </item>
+      <item></item>
+    </one-of>
+        
+    <one-of>
+      <item>
+        salon<tag>out.command+="salon";out.reply+=" dans le salon";</tag>
+      </item>
+      <item>
+        buanderie<tag>out.command+="buanderie";out.reply+=" dans la buanderie";</tag>
+      </item>
+      <item>
+        cuisine<tag>out.command+="cuisine";out.reply+=" dans la cuisine";</tag>
+      </item>
+      <item>
+        escalier<tag>out.command+="escalier";out.reply+=" dans l'escalier";</tag>
+      </item>
+      <item>
+        bureau<tag>out.command+="bureau";out.reply+=" dans le bureau";</tag>
+      </item>
+      <item>
+        jardin<tag>out.command+="jardin";out.reply+=" dans le jardin";</tag>
+      </item>
+
+      <item>
+        chambre<tag>out.addlocal="room";out.reply+=" dans la chambre";</tag>
+      </item>
+      <item>
+        chambre une<tag>out.command+="chambre 1";out.reply+=" dans la chambre une";</tag>
+      </item>
+      <item>
+        chambre du rez de chaussé<tag>out.command+="chambre 1";out.reply+=" dans la chambre du rez de chaussé";</tag>
+      </item>
+      <item>
+        chambre deux<tag>out.command+="chambre 2";out.reply+=" dans la chambre deux";</tag>
+      </item>
+      <item>
+        chambre trois<tag>out.command+="chambre 3";out.reply+=" dans la chambre trois";</tag>
+      </item>
+
+      <item>
+        salle à manger<tag>out.command+="salle à manger";out.reply+=" dans la salle à manger";</tag>
+      </item>
+
+      <item>
+        salle de bain de l'étage<tag>out.command+="salle de bain étage";out.reply+=" dans la salle de bain de l'étage";</tag>
+      </item>
+      <item>
+        salle de bain du rez de chaussé<tag>out.command+="salle de bain rdc";out.reply+=" dans la salle de bain du rez de chaussé";</tag>
+      </item>
+      <item>
+        salle de bain<tag>out.command+="salle de bain";out.addlocal="level";out.reply+=" dans la salle de bain {leveld}";</tag>
+      </item>
+
+      <item>
+        ici<tag>out.addlocal="room";out.reply+=" {roomd}";</tag>
+      </item>
+
+      <item>
+        pièce<tag>out.addlocal="room";out.reply+=" {roomd}";</tag>
+      </item>
+
+      <item>
+        a l'intérieur<tag>out.command+="interne";out.reply+=" a l'intérieur";</tag>
+      </item>
+      <item>
+        a l'extérieur<tag>out.command+="externe";out.reply+=" a l'extérieur";</tag>
+      </item>
+      <item>
+        dehors<tag>out.command+="externe";out.reply+=" dehors";</tag>
+      </item>
+      <item>
+        dedans<tag>out.command+="interne";out.reply+=" dedans";</tag>
+      </item>
+
+   
+      <item>
+        <tag>out.addlocal="room";out.reply+=" {roomd}";</tag>
+      </item>
+
+    </one-of>
+
+    <tag>out.type="jeedom_info";</tag>
+
+  
+  </rule>
+
+
+</grammar>

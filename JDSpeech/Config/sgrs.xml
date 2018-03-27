@@ -1,0 +1,36 @@
+<grammar tag-format="semantics/1.0" version="1.0" xml:lang="fr-FR" root="Main"
+ xmlns="http://www.w3.org/2001/06/grammar">
+
+  <rule id="Main">
+    <item> Hey Lija <ruleref uri="#ActionsPhrases"/></item>
+  </rule>
+
+  <rule id="ActionsPhrases" scope="public">
+    <one-of>
+      <item> allume <tag>out.action="allumer"</tag></item>
+      <item> éteins <tag>out.action="éteindre"</tag></item>
+    </one-of>
+
+   <ruleref uri="#separe"/> 
+	<ruleref uri="#Room"/> 
+	<tag>out.room=rules.latest()</tag>
+
+  </rule>
+  
+  <rule id="separe" >
+    <one-of>
+      <item> le </item>
+      <item> la </item>
+	  <item></item>
+    </one-of>
+  </rule>
+  
+  <rule id="Room" scope="public">
+    <one-of>
+      <item> salon </item>
+      <item> chambre </item>
+    </one-of>
+  </rule>
+ 
+  
+</grammar>

@@ -1,0 +1,162 @@
+﻿<grammar tag-format="semantics/1.0" version="1.0" xml:lang="fr-FR" root="Kodi_son"
+ xmlns="http://www.w3.org/2001/06/grammar">
+
+  <rule id="Kodi_son" scope="public">
+
+    <tag>out.command="";out.type="";out.reply="";out.replynext=""; </tag>
+
+    <item>Hey Lija</item>
+
+
+    <one-of>
+      <item>
+        augmente le son<tag>out.command="plus son";</tag>
+      </item>
+      <item>
+        baisse le son<tag>out.command="moins son";</tag>
+      </item>
+      <item>
+        diminu le son<tag>out.command="moins son";</tag>
+      </item>
+      <item>
+        coupe le son<tag>out.command="stop son";</tag>
+      </item>
+      <item>
+        éteint le son<tag>out.command="stop son";</tag>
+      </item>
+      <item>
+        met le son<tag>out.command="start son";</tag>
+      </item>
+      <item>
+        remet le son<tag>out.command="start son";</tag>
+      </item>
+      <item>
+        mute<tag>out.command="stop son";</tag>
+      </item>    
+    
+    </one-of>
+
+    <one-of>
+      <item> de 10 pourcents<tag>out.command+=" 10%";</tag>
+    </item>
+      <item> de 20 pourcents<tag>out.command+=" 20%";</tag>
+    </item>
+      <item> de 30 pourcents<tag>out.command+=" 30%";</tag>
+    </item>
+      <item> de 40 pourcents<tag>out.command+=" 40%";</tag>
+    </item>
+      <item> de 50 pourcents<tag>out.command+=" 50%";</tag>
+    </item>
+      <item> de 60 pourcents<tag>out.command+=" 60%";</tag>
+    </item>
+      <item> de 70 pourcents<tag>out.command+=" 70%";</tag>
+    </item>
+      <item> de 80 pourcents<tag>out.command+=" 80%";</tag>
+    </item>
+      <item> de 90 pourcents<tag>out.command+=" 90%";</tag>
+    </item>
+      <item> de 100 pourcents<tag>out.command+=" 100%";</tag>
+    </item>
+      <item> de 150 pourcents<tag>out.command+=" 150%";</tag>
+    </item>
+      <item> de 200 pourcents<tag>out.command+=" 200%";</tag>
+    </item>
+      <item> de moitié<tag>out.command+=" 50%";</tag>
+    </item>
+      <item></item>
+    </one-of>
+
+    <tag>out.command="chauffage ";out.reply="il fait {info1} degrés";</tag>
+
+    <one-of>
+      <item> dans le </item>
+      <item> dans la </item>
+      <item> du </item>
+      <item> de la  </item>
+      <item> de l'</item>
+    </one-of>
+
+    <one-of>
+      <item>
+        salon<tag>out.command+="salon";out.reply+=" dans le salon";</tag>
+      </item>
+      <item>
+        buanderie<tag>out.command+="buanderie";out.reply+=" dans la buanderie";</tag>
+      </item>
+      <item>
+        cuisine<tag>out.command+="cuisine";out.reply+=" dans la cuisine";</tag>
+      </item>
+      <item>
+        escalier<tag>out.command+="escalier";out.reply+=" dans l'escalier";</tag>
+      </item>
+      <item>
+        bureau<tag>out.command+="bureau";out.reply+=" dans le bureau";</tag>
+      </item>
+      <item>
+        jardin<tag>out.command+="jardin";out.reply+=" dans le jardin";</tag>
+      </item>
+
+      <item>
+        chambre<tag>out.reply+=" dans la {room}";</tag>
+      </item>
+      <item>
+        chambre une<tag>out.command+="chambre 1";out.reply+=" dans la chambre une";</tag>
+      </item>
+      <item>
+        chambre du rez de chaussé<tag>out.command+="chambre 1";out.reply+=" dans la chambre du rez de chaussé";</tag>
+      </item>
+      <item>
+        chambre deux<tag>out.command+="chambre 2";out.reply+=" dans la chambre deux";</tag>
+      </item>
+      <item>
+        chambre trois<tag>out.command+="chambre 3";out.reply+=" dans la chambre trois";</tag>
+      </item>
+
+      <item>
+        salle à manger<tag>out.command+="salle à manger";out.reply+=" dans la salle à manger";</tag>
+      </item>
+
+      <item>
+        salle de bain de l'étage<tag>out.command+="salle de bain étage";out.reply+=" dans la salle de bain de l'étage";</tag>
+      </item>
+      <item>
+        salle de bain du rez de chaussé<tag>out.command+="salle de bain rdc";out.reply+=" dans la salle de bain du rez de chaussé";</tag>
+      </item>
+      <item>
+        salle de bain<tag>out.command+="salle de bain {level}";out.reply+=" dans la salle de bain {leveld}";</tag>
+      </item>
+
+      <item>
+        ici<tag>out.command+="{room}";out.reply+=" {roomd}";</tag>
+      </item>
+
+      <item>
+        pièce<tag>out.command+="{room}";out.reply+=" {roomd}";</tag>
+      </item>
+
+      <item>
+        a l'intérieur<tag>out.command+="interne";out.reply+=" a l'intérieur";</tag>
+      </item>
+      <item>
+        a l'extérieur<tag>out.command+="externe";out.reply+=" a l'extérieur";</tag>
+      </item>
+      <item>
+        dehors<tag>out.command+="externe";out.reply+=" dehors";</tag>
+      </item>
+      <item>
+        dedans<tag>out.command+="interne";out.reply+=" dedans";</tag>
+      </item>
+
+
+      <item>
+        <tag>out.command+="{room}";out.reply+=" {roomd}";</tag>
+      </item>
+
+    </one-of>
+
+    <tag>out.type="jeedom_action";</tag>
+
+  </rule>
+
+
+</grammar>

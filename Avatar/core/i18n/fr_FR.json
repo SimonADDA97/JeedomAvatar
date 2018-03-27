@@ -1,0 +1,35 @@
+{
+    "plugins\/kodiasgui\/plugin_info\/info.xml": {
+        "Plugin permettant l'utilisation de Kodi comme interface graphique": "Plugin permettant l'utilisation de Kodi comme interface graphique",
+        "Aucune": "Aucune"
+    },
+    "plugins\/kodiasgui\/desktop\/php\/kodiasgui.php": {
+        "Ajouter un Kodi": "Ajouter un Kodi",
+        "Rechercher": "Rechercher",
+        "Mes Kodi": "Mes Kodi",
+        "Général": "Général",
+        "Nom de l'équipement Kodi": "Nom de l'équipement Kodi",
+        "Objet parent": "Objet parent",
+        "Aucun": "Aucun",
+        "Catégorie": "Catégorie",
+        "Activer": "Activer",
+        "Visible": "Visible",
+        "Adresse IP": "Adresse IP",
+        "Commandes": "Commandes",
+        "Nom": "Nom",
+        "Type": "Type",
+        "Action": "Action",
+        "Supprimer": "Supprimer",
+        "Sauvegarder": "Sauvegarder"
+    },
+    "plugins\/kodiasgui\/desktop\/js\/kodiasgui.js": {
+        "Historiser": "Historiser",
+        "Tester": "Tester"
+    },
+    "plugins\/kodiasgui\/core\/class\/kodiasgui.class.php": {
+        "Rafraîchir": "Rafraîchir",
+        "Statut": "Statut",
+        "Latence": "Latence",
+        "Echec du ping sur : ": "Echec du ping sur : "
+    }
+}

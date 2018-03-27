@@ -1,0 +1,12 @@
+{
+	"id" : "avatar",
+	"name" : "avatar",
+	"description" : "Plugin de controle d'avatar",
+	"licence" : "AGPL",
+	"author" : "Remy Mesnard",
+	"require" : "3.0",
+	"mobile" : "avatar",
+	"category" : "multimedia",
+	"hasOwnDeamon" : false,
+	"hasDependency" : false
+}

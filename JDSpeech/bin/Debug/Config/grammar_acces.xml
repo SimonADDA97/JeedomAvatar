@@ -1,0 +1,117 @@
+﻿<grammar tag-format="semantics/1.0" version="1.0" xml:lang="fr-FR" root="Acces"
+ xmlns="http://www.w3.org/2001/06/grammar">
+
+  <rule id="Acces" scope="public">
+
+    <tag>out.command="";out.type="";</tag>
+
+    <item>Hey Lija</item>
+
+    <one-of>
+      <item>
+        ouvre <tag>out.command="ouvrir ";</tag>
+      </item>
+      <item>
+        ferme <tag>out.command="fermer ";</tag>
+      </item>
+    </one-of>
+
+    <one-of>
+      <item> le </item>
+      <item> les </item>
+      <item> la </item>
+      <item></item>
+    </one-of>
+
+    <one-of>
+      <item> 
+        volet <tag>out.command+=" volet";</tag>
+      </item>
+      <item> 
+        store <tag>out.command+=" volet";</tag>
+      </item>
+      <item> 
+        porte <tag>out.command+=" porte";</tag>
+      </item>
+      <item> 
+        velux <tag>out.command+=" fenetre";</tag>
+      </item>
+      <item>
+        fenetre <tag>out.command+=" fenetre";</tag>
+      </item>
+    </one-of>
+
+    <one-of>
+      <item> dans le </item>
+      <item> dans la </item>
+      <item> du </item>
+      <item> de la  </item>
+      <item> de l'</item>
+    </one-of>
+
+
+    <one-of>
+      <item>
+        salon<tag>out.command+="salon";</tag>
+      </item>
+      <item>
+        buanderie<tag>out.command+="buanderie";</tag>
+      </item>
+      <item>
+        entrée<tag>out.command+="entrée";</tag>
+      </item>
+      <item>
+        cuisine<tag>out.command+="cuisine";</tag>
+      </item>
+      <item>
+        escalier<tag>out.command+="escalier";</tag>
+      </item>
+      <item>
+        bureau<tag>out.command+="bureau";</tag>
+      </item>
+      <item>
+        jardin<tag>out.command+="jardin";</tag>
+      </item>
+
+      <item>
+        chambre<tag>out.command+="{room}";</tag>
+      </item>
+      <item>
+        chambre une<tag>out.command+="chambre 1";</tag>
+      </item>
+      <item>
+        chambre du rez de chaussé<tag>out.command+="chambre 1";</tag>
+      </item>
+      <item>
+        chambre deux<tag>out.command+="chambre 2";</tag>
+      </item>
+      <item>
+        chambre trois<tag>out.command+="chambre 3";</tag>
+      </item>
+
+      <item>
+        salle à manger<tag>out.command+="salle à manger";</tag>
+      </item>
+
+      <item>
+        salle de bain de l'étage<tag>out.command+="salle de bain étage";</tag>
+      </item>
+      <item>
+        salle de bain du rez de chaussé<tag>out.command+="salle de bain rdc";</tag>
+      </item>
+      <item>
+        salle de bain<tag>out.command+="salle de bain {level}";</tag>
+      </item>
+
+      <item>
+        <tag>out.command+="{room}";</tag>
+      </item>
+
+    </one-of>
+
+    <tag>out.type="jeedom_action";</tag>
+
+  </rule>
+
+
+</grammar>

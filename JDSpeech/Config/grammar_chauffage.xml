@@ -1,0 +1,130 @@
+﻿<grammar tag-format="semantics/1.0" version="1.0" xml:lang="fr-FR" root="Chauffage"
+ xmlns="http://www.w3.org/2001/06/grammar">
+
+  <rule id="Chauffage" scope="public">
+
+    <tag>out.command="";out.type="";out.reply="";out.replynext=""; </tag>
+
+    <item>Hey Lija</item>
+
+    
+    <one-of>
+      <item>
+        augmente<tag>out.command="plus ";out.replynext=".j'augmente la consigne a {info2} degrès";</tag>
+      </item>
+      <item>
+        baisse <tag>out.command="moins ";out.replynext=".je baisse la consigne a {info2} degrès";</tag>
+      </item>
+      <item>
+        diminu <tag>out.command="moins ";out.replynext=".je diminu la consigne a {info2} degrès";</tag>
+      </item>
+      <item>
+        allume <tag>out.command="start ";out.replynext=".je met la consigne a {info2} degrès";</tag>
+      </item>
+      <item>
+        éteint <tag>out.command="stop ";out.replynext=".je stop le thermostat";</tag>
+      </item>
+    </one-of>
+
+    <one-of>
+      <item> la température</item>
+      <item> le chauffage</item>
+      <item> la clim</item>
+      <item> la climatisation</item>
+      <item> le thermostat</item>
+    </one-of>
+
+    <tag>out.command="chauffage ";out.reply="il fait {info1} degrés";</tag>
+
+    <one-of>
+      <item> dans le </item>
+      <item> dans la </item>
+      <item> du </item>
+      <item> de la  </item>
+      <item> de l'</item>
+    </one-of>
+
+    <one-of>
+      <item>
+        salon<tag>out.command+="salon";out.reply+=" dans le salon";</tag>
+      </item>
+      <item>
+        buanderie<tag>out.command+="buanderie";out.reply+=" dans la buanderie";</tag>
+      </item>
+      <item>
+        cuisine<tag>out.command+="cuisine";out.reply+=" dans la cuisine";</tag>
+      </item>
+      <item>
+        escalier<tag>out.command+="escalier";out.reply+=" dans l'escalier";</tag>
+      </item>
+      <item>
+        bureau<tag>out.command+="bureau";out.reply+=" dans le bureau";</tag>
+      </item>
+      <item>
+        jardin<tag>out.command+="jardin";out.reply+=" dans le jardin";</tag>
+      </item>
+
+      <item>
+        chambre<tag>out.command+="{room}";out.reply+=" dans la chambre";</tag>
+      </item>
+      <item>
+        chambre une<tag>out.command+="chambre 1";out.reply+=" dans la chambre une";</tag>
+      </item>
+      <item>
+        chambre du rez de chaussé<tag>out.command+="chambre 1";out.reply+=" dans la chambre du rez de chaussé";</tag>
+      </item>
+      <item>
+        chambre deux<tag>out.command+="chambre 2";out.reply+=" dans la chambre deux";</tag>
+      </item>
+      <item>
+        chambre trois<tag>out.command+="chambre 3";out.reply+=" dans la chambre trois";</tag>
+      </item>
+
+      <item>
+        salle à manger<tag>out.command+="salle à manger";out.reply+=" dans la salle à manger";</tag>
+      </item>
+
+      <item>
+        salle de bain de l'étage<tag>out.command+="salle de bain étage";out.reply+=" dans la salle de bain de l'étage";</tag>
+      </item>
+      <item>
+        salle de bain du rez de chaussé<tag>out.command+="salle de bain rdc";out.reply+=" dans la salle de bain du rez de chaussé";</tag>
+      </item>
+      <item>
+        salle de bain<tag>out.command+="salle de bain {level}";out.reply+=" dans la salle de bain {leveld}";</tag>
+      </item>
+
+      <item>
+        ici<tag>out.command+="{room}";out.reply+=" {roomd}";</tag>
+      </item>
+
+      <item>
+        pièce<tag>out.command+="{room}";out.reply+=" {roomd}";</tag>
+      </item>
+
+      <item>
+        a l'intérieur<tag>out.command+="interne";out.reply+=" a l'intérieur";</tag>
+      </item>
+      <item>
+        a l'extérieur<tag>out.command+="externe";out.reply+=" a l'extérieur";</tag>
+      </item>
+      <item>
+        dehors<tag>out.command+="externe";out.reply+=" dehors";</tag>
+      </item>
+      <item>
+        dedans<tag>out.command+="interne";out.reply+=" dedans";</tag>
+      </item>
+
+
+      <item>
+        <tag>out.command+="{room}";out.reply+=" {roomd}";</tag>
+      </item>
+
+    </one-of>
+
+    <tag>out.type="jeedom_action";out.reply+=out.replynext;</tag>
+
+  </rule>
+
+
+</grammar>

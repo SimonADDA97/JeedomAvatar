@@ -1,0 +1,2 @@
+You might be installing 32-bit voices that are unavailable when using the 64-bit Speech Properties dialog that you normally see on 64-bit Windows.
+Try using the 32-bit dialog by invoking %windir%\sysWOW64\speech\SpeechUX\SAPI.cpl
