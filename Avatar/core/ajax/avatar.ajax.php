@@ -16,57 +16,18 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  
  */
-//require_once '../../3rdparty/kodi_com.php';
 
 
- //  MAIN
- 
 try {
     require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-	
     include_file('core', 'authentification', 'php');
-/*
+
     if (!isConnect('admin')) {
         throw new Exception(__('401 - Accès non autorisé', __FILE__));
     }
-*/
-	if (init('action') == 'testServer') {
-		/*
-		$ip = init('ip');
-		$login = init('login');
-		$pwd = init('pwd');
-		$uid = init('uid');
-		$port = init('port');
-		*/
-		
-		$eqid = init('eqid');
-        $eqLogic = eqLogic::byId($eqid);		
-		
-		$callargs = 'test';
-		$reply = $eqLogic->callAvatar($callargs);
-		
-		
-		log::add('avatar', 'info', 'testServer return : '.$reply);
-        ajax::success($reply);
-    }		
-	
 
 
-	if (init('action') == 'getVoices') {
-
-		$eqid = init('eqid');
-        $eqLogic = eqLogic::byId($eqid);		
-		
-		$callargs = 'voices';
-		$reply = $eqLogic->callAvatar($callargs);
-		
-		$voicelist = split(',',$reply);
-		
-		//log::add('avatar', 'info', 'testServer return : '.$reply);
-        ajax::success($voicelist);
-    }
-
-    if (init('action') == 'getScriptContent') {
+	if (init('action') == 'getScriptContent') {
         $path = init('path');
 		
         if (!file_exists($path)) {
@@ -86,7 +47,7 @@ try {
         ajax::success($return);
     }
 
-	  if (init('action') == 'saveScriptContent') {
+	if (init('action') == 'saveScriptContent') {
         $path = init('path');
         if (!file_exists($path)) {
             throw new Exception(__('Aucun fichier trouvé : ', __FILE__) . $path);
@@ -127,15 +88,10 @@ try {
         }
         ajax::success($path);
     }
-	
 
-	
-   // throw new Exception(__('Aucune methode correspondante à : ', __FILE__) . init('action'));
+    throw new Exception(__('Aucune methode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */
 } catch (Exception $e) {
     ajax::error(displayExeption($e), $e->getCode());
 }
-
-
-
 ?>

@@ -2,63 +2,15 @@
 if (!isConnect('admin')) {
 	throw new Exception('{{401 - Accès non autorisé}}');
 }
-
-include_file('3rdparty', 'jquery.fileupload/jquery.ui.widget', 'js');
-include_file('3rdparty', 'jquery.fileupload/jquery.iframe-transport', 'js');
-include_file('3rdparty', 'jquery.fileupload/jquery.fileupload', 'js');
-include_file('3rdparty', 'jquery.lazyload/jquery.lazyload', 'js');
-include_file('3rdparty', 'jquery.packery/jquery.packery', 'js');
-sendVarToJS('eqType', 'avatar');
 sendVarToJS('userScriptDir', getRootPath() . '/' . config::byKey('userScriptDir', 'avatar'));
 
-$eqLogics = eqLogic::byType('avatar');
+$plugin = plugin::byId('avatar');
+sendVarToJS('eqType', $plugin->getId());
+$eqLogics = eqLogic::byType($plugin->getId());
 
 ?>
 
-<style>
-    .divIconSel{
-        height: 80px;
-        border: 1px solid #fff;
-        box-sizing: border-box;
-        cursor: pointer;
-    }
-    .iconSel{
-        line-height: 1.4;
-        font-size: 1.5em;
-    }
-    .iconSelected{
-        background-color: #563d7c;
-        color: white;
-    }
-    .iconDesc{
-        font-size: 0.8em;
-    }
-    #bsInfoNumeric .slider-selection {
-        background: #428041;
-    }
-    .noPaddingLeft { padding-left: 0;}
-    .noPaddingRight { padding-right: 0;}
-    .noMarginBottom { margin-bottom: 0;}
-    .noPaddingWell {
-        padding-bottom: 0;
-        padding-top: 0;
-    }
 
-    .market:hover{
-        background-color : #F2F1EF !important;
-    }
-    .fileinput-button input {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 0;
-        opacity: 0;
-        -ms-filter: 'alpha(opacity=0)';
-        font-size: 200px;
-        direction: ltr;
-        cursor: pointer;
-    }
-</style>
 
 
 <div class="row row-overflow">
@@ -149,7 +101,7 @@ $eqLogics = eqLogic::byType('avatar');
 		<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
 
 			<div role="tabpanel" class="tab-pane active" id="eqlogictab">	
-				<br/>								
+											
 
 				<form class="form-horizontal">
 					<fieldset>								
@@ -234,7 +186,7 @@ $eqLogics = eqLogic::byType('avatar');
 			</div>
 
 			<div role="tabpanel" class="tab-pane" id="cfgReco" >
-				<form>
+				
 				<br>
 					<div class="form-group row">
 						<label class="control-label col-sm-2">{{Configuration de la reconaissance vocale}}</label>
@@ -279,13 +231,14 @@ $eqLogics = eqLogic::byType('avatar');
 					</div> 
 
 				<br>
-					<div class="form-group row">
+					<div class="row">
 					<div class="col-sm-12">
 						<a class="btn btn-success btn-sm pull-right" id="bt_addGrammar"><i class="fa fa-plus-circle"></i> {{Ajouter une grammaire}}</a>
 
 						<table id="table_recogrammar" class="table table-bordered table-condensed">
 							<thead>
 								<tr>
+									<th style="width: 50px;">#</th>
 									<th>{{Grammaire}}</th>
 									<th>{{Status initial}}</th>
 									<th>{{Contenu}}</th>
@@ -297,13 +250,13 @@ $eqLogics = eqLogic::byType('avatar');
 						</table>
 						</div> 
 					</div> 
-				</form>
+				
 			</div>
 
 
 			<div role="tabpanel" class="tab-pane" id="cfgVoice" >
-			<form>
-			</br>
+			
+			<br/>
 					<div class="form-group row">
 					<label class="control-label col-sm-2">{{Configuration de la parole}}</label>
 					
@@ -326,14 +279,14 @@ $eqLogics = eqLogic::byType('avatar');
 						</div>
 					</div>
 
-			</form>
+			
 			</div>
 		
 
 			<div role="tabpanel" class="tab-pane" id="cmdAnims" >
 
-				<form>
-					</br>
+				
+					<br/>
 
 					<div class="form-group row">
 						<label class="control-label col-sm-2">{{Animations}}</label>
@@ -363,7 +316,7 @@ $eqLogics = eqLogic::byType('avatar');
 
 
 					<div class="form-group">		
-					<br>
+					<br/>
 					<div class="form-group row">
 					<div class="col-sm-12">
 						<a class="btn btn-success btn-sm pull-right" id="bt_addAnimation"><i class="fa fa-plus-circle"></i> {{Ajouter une grammaire}}</a>
@@ -387,7 +340,7 @@ $eqLogics = eqLogic::byType('avatar');
 
 					</div>
 
-				</form>
+				
 			</div>
 
 
@@ -407,7 +360,6 @@ $eqLogics = eqLogic::byType('avatar');
     <textarea id="ta_editScriptFile" class="form-control" style="height: 100%;"></textarea>
 </div>
 
-<?php include_file('3rdparty', 'jquery.fileTree/jquery.easing.1.3', 'js', 'avatar');?>
-<?php include_file('3rdparty', 'jquery.fileTree/jqueryFileTree', 'js', 'avatar');?>
+
 <?php include_file('desktop', 'avatar', 'js', 'avatar');?>
 <?php include_file('core', 'plugin.template', 'js');?>

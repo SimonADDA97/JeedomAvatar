@@ -71,20 +71,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\grammar_acces.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Grammars\grammar_acces.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Config\grammar_chauffage.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Config\grammar_eclairages.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Config\grammar_kodi_son.xml" />
-    <Content Include="Config\grammar_temperatures.xml">
+    <Content Include="Grammars\grammar_chauffage.xml" />
+    <Content Include="Grammars\grammar_eclairages.xml" />
+    <Content Include="Grammars\grammar_kodi_son.xml" />
+    <Content Include="Grammars\grammar_temperatures.xml">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Config\Settings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

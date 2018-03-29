@@ -25,28 +25,20 @@ class avatar extends eqLogic {
 
 	/*     * ***********************Methode static*************************** */
 
+
+
 	public function postSave() {
-
-	/* Remove unused commands
-		$cmd = cmd::byEqLogicIdCmdName($this->getId(),'Start');
-		if (is_object($cmd))
-			$cmd->remove();
-	*/
-	/*
-	
-		$cmd = cmd::byEqLogicIdCmdName($this->getId(),'Status');
-		if (!is_object($cmd))
-			$this->createCmdInfo('Status',$this->getId(),'Status'.$this->getId());	
-
-		$cmd = cmd::byEqLogicIdCmdName($this->getId(),'GetStatus');
-		if (!is_object($cmd))
-			$this->createCmd('GetStatus',$this->getId(),'GetStatus'.$this->getId(),'other');	
-
-		$cmd = cmd::byEqLogicIdCmdName($this->getId(),'SendCommand');
-		if (!is_object($cmd))
-			$this->createCmd('SendCommand',$this->getId(),'SendCommand'.$this->getId(),'message');	
-		
-		*/
+		$refresh = $this->getCmd(null, 'refresh');
+		if (!is_object($refresh)) {
+			$refresh = new virtualCmd();
+			$refresh->setLogicalId('refresh');
+			$refresh->setIsVisible(1);
+			$refresh->setName(__('Rafraichir', __FILE__));
+		}
+		$refresh->setType('action');
+		$refresh->setSubType('other');
+		$refresh->setEqLogic_id($this->getId());
+		$refresh->save();
 	}
 
 	public function preInsert() {
@@ -57,7 +49,7 @@ class avatar extends eqLogic {
 	public function preRemove() {
 	}	
 		
-	
+	/*
 	public function createCmdInfo($cmdname,$eqlogic,$cmdlogic) {
 		log::add('avatar', 'debug', 'create Info Command '.$cmdlogic.' = '.$cmdname);
 		$cmd = new avatarCmd();
@@ -81,7 +73,7 @@ class avatar extends eqLogic {
 		$cmd->setSubType($cmdsubtype);
 		$cmd->save();
 	}	
-	
+	*/
 	public function callAvatar($callargs)
 	{
 		
@@ -119,9 +111,18 @@ class avatarCmd extends cmd {
 	/*     * *********************Methode d'instance************************* */
 
 	public function dontRemoveCmd() {
-		return true;
+		if ($this->getLogicalId() == 'refresh') {
+			return true;
+		}
+		return false;
 	}
 
+	public function preSave() {
+		if ($this->getLogicalId() == 'refresh') {
+			return;
+
+			}
+	}
 	
 	public function execute($_options = array()) {
 		$result="";

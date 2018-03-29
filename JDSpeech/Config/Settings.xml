@@ -27,6 +27,6 @@
   </Settings>
   <Settings>
     <Name>DebugMode</Name>
-    <Value>true</Value>
+    <Value>0</Value>
   </Settings>
 </NewDataSet>

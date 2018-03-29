@@ -34,16 +34,11 @@ E:\Dev\Projects\JeedomAvatar\JDSpeech\bin\Debug\Newtonsoft.Json.xml
 \\HOMESERVER\Projects\JeedomAvatar\JDSpeech\obj\Debug\JDSpeech.csprojResolveAssemblyReference.cache
 \\HOMESERVER\Projects\JeedomAvatar\JDSpeech\obj\Debug\JDSpeech.exe
 \\HOMESERVER\Projects\JeedomAvatar\JDSpeech\obj\Debug\JDSpeech.pdb
-C:\Projects\JeedomAvatar\JDSpeech\bin\Debug\Config\grammar_acces.xml
-C:\Projects\JeedomAvatar\JDSpeech\bin\Debug\Config\grammar_chauffage.xml
-C:\Projects\JeedomAvatar\JDSpeech\bin\Debug\Config\grammar_eclairages.xml
-C:\Projects\JeedomAvatar\JDSpeech\bin\Debug\Config\grammar_temperatures.xml
 C:\Projects\JeedomAvatar\JDSpeech\bin\Debug\Config\Settings.xml
 C:\Projects\JeedomAvatar\JDSpeech\bin\Debug\JDSpeech.exe.config
 C:\Projects\JeedomAvatar\JDSpeech\bin\Debug\JDSpeech.exe
 C:\Projects\JeedomAvatar\JDSpeech\bin\Debug\JDSpeech.pdb
 C:\Projects\JeedomAvatar\JDSpeech\bin\Debug\Newtonsoft.Json.dll
 C:\Projects\JeedomAvatar\JDSpeech\bin\Debug\Newtonsoft.Json.xml
-C:\Projects\JeedomAvatar\JDSpeech\obj\Debug\JDSpeech.csprojResolveAssemblyReference.cache
 C:\Projects\JeedomAvatar\JDSpeech\obj\Debug\JDSpeech.exe
 C:\Projects\JeedomAvatar\JDSpeech\obj\Debug\JDSpeech.pdb

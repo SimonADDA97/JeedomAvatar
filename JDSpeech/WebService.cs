@@ -83,7 +83,7 @@ namespace JDSpeech
     {
         // context
 
-        Speaker mySpeaker;
+        
         Config myConfig;
         SpeechReco recotask;
         bool voicenabled;
@@ -94,14 +94,17 @@ namespace JDSpeech
             myConfig = new Config();
             myConfig.Load();
 
-            voicenabled = myConfig.getbool("voiceenabled");
+            recoenabled = myConfig.getbool("recoenabled");
+
+            if (recoenabled)
+                recoenabled = StartSpeech();
+            else
+                recotask = new SpeechReco();
+
             if (voicenabled)
                 voicenabled = StartVoice();
 
-            recoenabled = myConfig.getbool("recoenabled");
-            if (recoenabled)
-                recoenabled = StartSpeech();
-            
+
         }
 
         public string Test()
@@ -115,9 +118,9 @@ namespace JDSpeech
 
             try
             {
-                mySpeaker = new Speaker();
-                mySpeaker.voicename = myConfig.getstring("Voice", "");
-                mySpeaker.Initialize();
+                recotask.mySpeaker = new Speaker();
+                recotask.mySpeaker.voicename = myConfig.getstring("Voice", "");
+                recotask.mySpeaker.Initialize();
             }
             catch ( Exception mye)
             {
@@ -136,7 +139,7 @@ namespace JDSpeech
 
             try
             {
-                mySpeaker.Dispose();
+                recotask.mySpeaker.Dispose();
             }
             catch (Exception mye)
             {
@@ -172,11 +175,7 @@ namespace JDSpeech
             try
             {
                 recotask = new SpeechReco();
-                if (voicenabled)
-                { 
-                    recotask.Speaker = mySpeaker;
-                    recotask.voicenabled = true;
-                }
+                recotask.start();
             }
             catch (Exception mye)
             {
@@ -228,21 +227,21 @@ namespace JDSpeech
 
         public string Say(string msg)
         {
-            mySpeaker.Speak(msg);
+            recotask.mySpeaker.Speak(msg);
             return ("ok");
         }
 
         public string getVoices()
         {
             
-            return JsonConvert.SerializeObject(mySpeaker.getVoices(), Formatting.Indented);
+            return JsonConvert.SerializeObject(recotask.mySpeaker.getVoices(), Formatting.Indented);
 
         }
 
 
         public string setVoice(string newvoice)
         {
-            mySpeaker.setVoice(newvoice);
+            recotask.mySpeaker.setVoice(newvoice);
             myConfig.setstring("Voice",newvoice);
             myConfig.save();
             return ("Voice set to " + newvoice);

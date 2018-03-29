@@ -12,7 +12,7 @@ namespace JDSpeech
 
         Jeedom jeedomClient;
         
-        public Speaker Speaker;
+        public Speaker mySpeaker;
         public bool voicenabled=false;
 
         public int confidence=70;
@@ -32,19 +32,23 @@ namespace JDSpeech
         {
             LoadConfig();
 
+            jeedomClient = new Jeedom(jeedomURL, jeedomUID);
+            
+        }
 
-            try { 
-            recognizer = new SpeechRecognitionEngine(new System.Globalization.CultureInfo(cultureinfo));
+        public void start()
+        {
+            try
+            {
+                recognizer = new SpeechRecognitionEngine(new System.Globalization.CultureInfo(cultureinfo));
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error starting recognition engine : " + e.Message );
+                Console.WriteLine("Error starting recognition engine : " + e.Message);
                 return;
             }
-           
 
             // load grammar
-
             LoadGrammars();
 
             // Attach event handlers for recognition events.
@@ -55,8 +59,6 @@ namespace JDSpeech
             recognizer.SetInputToDefaultAudioDevice(); // set the input of the speech recognizer to the default audio device
             recognizer.RecognizeAsync(RecognizeMode.Multiple); // recognize speech asynchronous
 
-            jeedomClient = new Jeedom(jeedomURL, jeedomUID);
-            
         }
 
         public void LoadConfig()
@@ -94,6 +96,7 @@ namespace JDSpeech
         public void Dispose()
         {
             Console.WriteLine("Recognition engine stopped.");
+            mySpeaker.Dispose();
             recognizer.Dispose();
         }
 
@@ -227,7 +230,7 @@ namespace JDSpeech
                 {
                     rr_say=AddKeyWords(rr_say, "");
                     if (voicenabled)
-                        Speaker.Speak(rr_say);
+                        mySpeaker.Speak(rr_say);
                     else
                         Console.WriteLine(" Voice disabled . Can't say   : {0}", rr_say);
                 }
@@ -243,7 +246,7 @@ namespace JDSpeech
                     rr_reply = AddKeyWords(rr_reply, rr_infos);
                     
                     if (voicenabled)
-                        Speaker.Speak(rr_reply);
+                        mySpeaker.Speak(rr_reply);
                     else
                         Console.WriteLine(" Voice disabled . Can't reply   : {0}", rr_reply);
                 }

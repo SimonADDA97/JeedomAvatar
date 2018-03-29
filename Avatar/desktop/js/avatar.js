@@ -17,20 +17,30 @@
 
 
 // Global
-
-editor = null;
+//editor = null;
 
 $("#bt_addGrammar").on('click', function (event) {
+    var _cmd = { type: 'action', subType: 'message'};
+    _cmd.configuration = { grammar: 'yes' };
+    addCmdToTable(_cmd);
+});
+/*
+$("#bt_addAnimation").on('click', function (event) {
     var _cmd = { type: 'action' };
-    _cmd.configuration = { subtype: 'grammar' };
+    _cmd.configuration = { anim: 'yes' };
     addCmdToTable(_cmd);
 });
 
-$("#bt_addAnimation").on('click', function (event) {
-    var _cmd = { type: 'action' };
-    _cmd.configuration = { subtype: 'anim' };
-    addCmdToTable(_cmd);
+
+$('#table_recogrammar tbody').delegate('tr .remove', 'click', function (event) {
+    $(this).closest('tr').remove();
 });
+
+
+$('#table_cmdAnims tbody').delegate('tr .remove', 'click', function (event) {
+    $(this).closest('tr').remove();
+});
+*/
 
 
 $("#md_browseScriptFile").dialog({
@@ -38,12 +48,6 @@ $("#md_browseScriptFile").dialog({
     modal: true,
     height: (jQuery(window).height() - 150),
 });
-
-$('#table_recogrammar tbody').delegate('tr .remove', 'click', function (event) {
-    $(this).closest('tr').remove();
-});
-
-
 
 
 $("#table_recogrammar tbody").delegate(".browseScriptFile", 'click', function (event) {
@@ -222,14 +226,6 @@ function updateVoiceList( _equip ) {
 
 
 
-function saveEqLogic(_eqLogic) {
-
-    	
-	return _eqLogic;
-	
-}
-
-
 function addCmdToTable(_cmd) {
 
 
@@ -244,17 +240,19 @@ function addCmdToTable(_cmd) {
     }
 
   //  if (_cmd.configuration['subtype'] == 'grammar') {
-    
-        var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">';
+    _cmd.configuration['grammar'] = 'yes';
 
+        var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '" >';
+         tr += '<td>';
+         tr += '<span class="cmdAttr" data-l1key="id"></span>';
+         tr += '<span class="cmdAttr" style="display : none;" data-l1key="type" ></span>';
+         tr += '<span class="cmdAttr" style="display : none;" data-l1key="subType" ></span>';
+         tr += '<span class="cmdAttr" style="display : none;" data-l1key="configuration" data-l2key="grammar" ></span>';
+         tr += '</td>';
         tr += '<td>';
-        tr += '<input class="cmdAttr form-control input-sm" data-l1key="id"  style="display : none;">';
         tr += '<div class="row">';
         tr += '<div class="col-sm-6">';
         tr += '<input class="cmdAttr form-control input-sm" data-l1key="name">';
-        tr += '<input class="cmdAttr form-control input-sm" data-l1key="type" style="display : none;">';
-        tr += '<input class="cmdAttr form-control input-sm" data-l1key="subType" style="display : none;">';
-        tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="subtype" style="display : none;">';
         tr += '</div>';
         tr += '</div>';
         tr += '</td>';
@@ -273,45 +271,24 @@ function addCmdToTable(_cmd) {
         tr += '<td>';
         if (is_numeric(_cmd.id)) {
             tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fa fa-cogs"></i></a> ';
-            tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Tester}}</a>';
         }
         tr += ' <a class="btn btn-default btn-xs cmdAction" data-action="copy" title="Dupliquer"><i class="fa fa-files-o"></i></a> ';
         tr += '<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i></td>';
+        
         tr += '</tr>';
 
+        //_cmd.type = 'action';
+        //_cmd.subType = 'message';
         $('#table_recogrammar tbody').append(tr);
         $('#table_recogrammar tbody tr:last').setValues(_cmd, '.cmdAttr');
 
-
-        _cmd.type = 'action';
-        _cmd.subType = 'message';
-        _cmd.configuration['subtype'] == 'grammar';
-        $('#table_recogrammar tbody tr:last .cmdAttr[data-l1key=type]').value('Action');
-
-        var tr = $('#table_recogrammar tbody tr:last');
-        jeedom.eqLogic.builSelectCmd({
-            id: $(".li_eqLogic.active").attr('data-eqLogic_id'),
-            filter: { type: 'info' },
-            error: function (error) {
-                $('#div_alert').showAlert({ message: error.message, level: 'danger' });
-            },
-            success: function (result) {
-                tr.find('.cmdAttr[data-l1key=value]').append(result);
-                tr.find('.cmdAttr[data-l1key=configuration][data-l2key=updateCmdId]').append(result);
-                tr.setValues(_cmd, '.cmdAttr');
-                jeedom.cmd.changeType(tr, init(_cmd.subType));
-                initTooltips();
-            }
-        });
+            
 
 //    }
 //    else if (_cmd.configuration['subtype'] == 'anim') {
 //  }
     
 }
-
-
-
 
 
 
@@ -441,16 +418,5 @@ function removeScript(_path) {
     });
     return success;
 }
-
-
-
-
-
-function printEqLogic(_eqLogic) {
-
-   
-}
- 
-
 
 
