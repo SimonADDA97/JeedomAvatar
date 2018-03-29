@@ -119,15 +119,18 @@ namespace JDSpeech
             string[] grammarFiles = jeedomClient.getGrammars();
             foreach (string grammarFile in grammarFiles)
             {
-                stringgrammar = jeedomClient.getGrammarFile(grammarFile);
-                sgrsDoc = new SrgsDocument(System.Xml.XmlReader.Create(new StringReader(stringgrammar)));
+                if (grammarFile != "")
+                { 
+                    stringgrammar = jeedomClient.getGrammarFile(grammarFile);
+                    sgrsDoc = new SrgsDocument(System.Xml.XmlReader.Create(new StringReader(stringgrammar)));
 
-                testGrammar = new Grammar(sgrsDoc);
-                testGrammar.Name = "GR " + grammarFile;
-                testGrammar.Enabled = true;
+                    testGrammar = new Grammar(sgrsDoc);
+                    testGrammar.Name = "GR " + grammarFile;
+                    testGrammar.Enabled = true;
 
-                recognizer.LoadGrammar(testGrammar);
-                Console.WriteLine(" - {0}", testGrammar.Name);
+                    recognizer.LoadGrammar(testGrammar);
+                    Console.WriteLine(" - {0}", testGrammar.Name);
+                }
             }
 
             Console.WriteLine("Load Inactive grammar :");
@@ -135,15 +138,18 @@ namespace JDSpeech
             string[] subgrammarFiles = jeedomClient.getsubGrammars();
             foreach (string grammarFile in subgrammarFiles)
             {
-                stringgrammar = jeedomClient.getGrammarFile(grammarFile);
-                sgrsDoc = new SrgsDocument(System.Xml.XmlReader.Create(new StringReader(stringgrammar)));
+                if (grammarFile != "")
+                {
+                    stringgrammar = jeedomClient.getGrammarFile(grammarFile);
+                    sgrsDoc = new SrgsDocument(System.Xml.XmlReader.Create(new StringReader(stringgrammar)));
 
-                testGrammar = new Grammar(sgrsDoc);
-                testGrammar.Name = "SUB " + grammarFile;
-                testGrammar.Enabled = false;
+                    testGrammar = new Grammar(sgrsDoc);
+                    testGrammar.Name = "SUB " + grammarFile;
+                    testGrammar.Enabled = false;
 
-                recognizer.LoadGrammar(testGrammar);
-                Console.WriteLine(" - {0}", testGrammar.Name);
+                    recognizer.LoadGrammar(testGrammar);
+                    Console.WriteLine(" - {0}", testGrammar.Name);
+                }
             }
         }
 
@@ -183,6 +189,7 @@ namespace JDSpeech
             string rr_say = "";
             string rr_chain = "";
             string rr_infos = "";
+            string rr_noanswer = "";
 
             if (match >= confidence)
             { 
@@ -210,6 +217,8 @@ namespace JDSpeech
                         rr_say = semant.Value.Value.ToString();
                     else if (semant.Key == "chain")
                         rr_chain = semant.Value.Value.ToString();
+                    else if (semant.Key == "noanswer")
+                        rr_noanswer = semant.Value.Value.ToString();
                 }
 
                 rr_command = AddKeyWords(rr_command, "");
@@ -241,7 +250,7 @@ namespace JDSpeech
                 if (rr_type == "jeedom_info")
                     rr_infos = jeedomClient.send(rr_command, "info");
 
-                if (rr_reply != "")
+                if ( Neededinfos(rr_infos,rr_reply) & (rr_reply != "") )
                 {
                     rr_reply = AddKeyWords(rr_reply, rr_infos);
                     
@@ -251,6 +260,18 @@ namespace JDSpeech
                         Console.WriteLine(" Voice disabled . Can't reply   : {0}", rr_reply);
                 }
 
+                if ( rr_noanswer!="" & rr_infos=="" )
+                {
+                    rr_noanswer = AddKeyWords(rr_noanswer, "");
+
+                    if (voicenabled)
+                        mySpeaker.Speak(rr_noanswer);
+                    else
+                        Console.WriteLine(" Voice disabled . Can't reply   : {0}", rr_noanswer);
+
+
+                }
+
                 if (rr_chain != "")
                 { 
                     EnableGrammar(rr_chain);
@@ -258,6 +279,15 @@ namespace JDSpeech
                 }
 
             }
+        }
+
+        public bool Neededinfos(string infosreceived , string replyphrase)
+        {
+
+            if (( replyphrase == "") | ((replyphrase.IndexOf("{info", 0) > 0 ) & infosreceived =="") )
+                    return false;
+
+            return true;
         }
 
         public string AddKeyWords(string phrase,string infos)
@@ -273,7 +303,7 @@ namespace JDSpeech
                 {roomd}  par  le nom de la piece précédé de : du / de / de la
             */
             string[] infoArray = infos.Split(';');
-            int inc = 0;
+            int inc = 1;
             foreach (string info in infoArray)
             { 
                 phrasecomplete = phrasecomplete.Replace("{info"+inc+"}", info);

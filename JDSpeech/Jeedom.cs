@@ -28,7 +28,7 @@ namespace JDSpeech
         public string send(string cmds,string type)
         {
             string urlreq = urlapi + "uid=" + uid + "&func=process&type=" + type + "&cmd=" + cmds ;
-            string responseString = client.GetStringAsync(urlreq).ToString();
+            string responseString = client.GetStringAsync(urlreq).Result;
             return (responseString);
         }
 

@@ -66,17 +66,19 @@ function getGrammarList($sub)
 
 	foreach ($cmds as $cmd){
 
-		if ( $cmd->getConfiguration("status","") == "1" )  
+		if ( $cmd->getConfiguration("grammar","") == "yes" )  
 		{
-			if ( $sub == "" )
-				$glist .= $cmd->getName().";";
+			if ( $cmd->getConfiguration("status","") == "1" )  
+			{
+				if ( $sub == "" )
+					$glist .= $cmd->getName().";";
+			}
+			else
+			{
+				if ( $sub != "" )
+					$glist .= $cmd->getName().";";
+			}
 		}
-		else
-		{
-			if ( $sub != "" )
-				$glist .= $cmd->getName().";";
-		}
-
 	}	
 
 	return ($glist);

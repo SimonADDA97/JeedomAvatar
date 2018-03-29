@@ -95,6 +95,7 @@ namespace JDSpeech
             myConfig.Load();
 
             recoenabled = myConfig.getbool("recoenabled");
+            voicenabled = myConfig.getbool("voiceenabled");
 
             if (recoenabled)
                 recoenabled = StartSpeech();
@@ -104,7 +105,8 @@ namespace JDSpeech
             if (voicenabled)
                 voicenabled = StartVoice();
 
-
+            recotask.voicenabled = voicenabled;
+            
         }
 
         public string Test()
