@@ -18,7 +18,11 @@ $RECYCLE.BIN/
 *.lnk
 
 # Windows directory
+.vs/
 packages/
+JDSpeech/obj/
+JDSpeech/bin/Debug/
+JDSpeech/Ressources/
 
 # =========================
 # Operating System Files
