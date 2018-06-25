@@ -20,8 +20,8 @@ $RECYCLE.BIN/
 # Windows directory
 .vs/*
 packages/
-JDSpeech/obj/
-JDSpeech/bin/
+JDSpeech/obj/*
+JDSpeech/bin/*
 JDSpeech/Ressources/
 
 # =========================
