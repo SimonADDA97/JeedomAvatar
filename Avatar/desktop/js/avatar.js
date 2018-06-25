@@ -17,30 +17,72 @@
 
 
 // Global
-//editor = null;
+editor = null;
 
 $("#bt_addGrammar").on('click', function (event) {
     var _cmd = { type: 'action', subType: 'message'};
     _cmd.configuration = { grammar: 'yes' };
     addCmdToTable(_cmd);
 });
-/*
+
 $("#bt_addAnimation").on('click', function (event) {
-    var _cmd = { type: 'action' };
+    var _cmd = { type: 'action', subType: 'message' };
     _cmd.configuration = { anim: 'yes' };
     addCmdToTable(_cmd);
 });
 
-
-$('#table_recogrammar tbody').delegate('tr .remove', 'click', function (event) {
-    $(this).closest('tr').remove();
+$("#bt_textosay").on('click', function (event) {
+    var equip_id = $('.eqLogicAttr[data-l1key=id]').value();
+    var textosay = $('#texttosay').value();
+    sendtextosay(equip_id, textosay);
 });
 
 
-$('#table_cmdAnims tbody').delegate('tr .remove', 'click', function (event) {
-    $(this).closest('tr').remove();
+$("#bt_synchronize").on('click', function (event) {
+    var equip_id = $('.eqLogicAttr[data-l1key=id]').value();
+    sendsynchronize(equip_id);
 });
-*/
+
+function sendtextosay(_equip_id, _textosay) {
+    $.ajax({
+        type: "POST",
+        url: "plugins/avatar/core/ajax/avatar.ajax.php",
+        data: {
+            action: "say",
+            eqid: _equip_id,
+            message: _textosay
+        },
+        dataType: 'json',
+        error: function (request, status, error) {
+            handleAjaxError(request, status, error);
+        },
+        success: function (reply) {
+            $('#div_alert').showAlert({ message: '{{Commande exécutée}}', level: 'success' });
+        }
+    });
+
+}
+
+
+function sendsynchronize(_equip_id) {
+    $.ajax({
+        type: "POST",
+        url: "plugins/avatar/core/ajax/avatar.ajax.php",
+        data: {
+            action: "synchro",
+            eqid: _equip_id
+        },
+        dataType: 'json',
+        error: function (request, status, error) {
+            handleAjaxError(request, status, error);
+        },
+        success: function (reply) {
+            $('#div_alert').showAlert({ message: '{{Commande exécutée}}', level: 'success' });
+        }
+    });
+
+}
+
 
 
 $("#md_browseScriptFile").dialog({
@@ -162,25 +204,25 @@ $('#btn_testAvatarserver').click(function () {
 
 
 function testServer(_equip_id) {
-	$.ajax({
-		type: "POST",
-		url: "plugins/avatar/core/ajax/avatar.ajax.php", 
-		data: {
-			action: "testServer",
-			eqid: _equip_id
-		},
-		dataType: 'json',
-		error: function (request, status, error) {
-			handleAjaxError(request, status, error);
-		},
-		success: function (reply) {
-			if (reply.result !== 'OK') 
-				$('#div_alert').showAlert({message: reply.result, level: 'danger'});
-			else
-				$('#div_alert').showAlert({message: '{{Test de connection réussi}}', level: 'success'});
-		}
-	});	
-	
+    $.ajax({
+        type: "POST",
+        url: "plugins/avatar/core/ajax/avatar.ajax.php",
+        data: {
+            action: "testServer",
+            eqid: _equip_id
+        },
+        dataType: 'json',
+        error: function (request, status, error) {
+            handleAjaxError(request, status, error);
+        },
+        success: function (reply) {
+            if (reply.result !== 'OK')
+                $('#div_alert').showAlert({ message: reply.result, level: 'danger' });
+            else
+                $('#div_alert').showAlert({ message: '{{Test de connection réussi}}', level: 'success' });
+        }
+    });
+
 }
  
 
@@ -224,7 +266,17 @@ function updateVoiceList( _equip ) {
 	
 }
 
+function printEqLogic(_eqLogic) {
+    $('#sel_anim_start').empty();
+    $('#sel_anim_idle').empty();
+    $('#sel_anim_say').empty();
+    $('#sel_anim_warn').empty();
 
+    $('#sel_anim_start').append('<option value="Aucune">Aucune</option>');
+    $('#sel_anim_idle').append('<option value="Aucune">Aucune</option>');
+    $('#sel_anim_say').append('<option value="Aucune">Aucune</option>');
+    $('#sel_anim_warn').append('<option value="Aucune">Aucune</option>');
+}
 
 function addCmdToTable(_cmd) {
 
@@ -239,9 +291,8 @@ function addCmdToTable(_cmd) {
         return;
     }
 
-  //  if (_cmd.configuration['subtype'] == 'grammar') {
-    _cmd.configuration['grammar'] = 'yes';
-
+    if (_cmd.configuration['grammar'] == 'yes') {
+    
         var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '" >';
          tr += '<td>';
          tr += '<span class="cmdAttr" data-l1key="id"></span>';
@@ -257,9 +308,11 @@ function addCmdToTable(_cmd) {
         tr += '</div>';
         tr += '</td>';
         tr += '<td>';
-        tr += '<center>';
-        tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr" data-l1key="configuration" data-l2key="status"/>{{Active}}</label></span> ';
-        tr += '</center>';
+        tr += '<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="filetype" style="margin-top : 5px;" >';
+        tr += '<option value="grammar">{{Grammaire Active}}</option>';
+        tr += '<option value="subgrammar">{{Grammaire Inactive}}</option>';
+        tr += '<option value="sharedgrammar">{{Grammaire Partagée}}</option>';
+        tr += '</select>';
         tr += '</td>';
         tr += '<td><textarea style="height : 45px;" class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="request"></textarea>';
         tr += '<a class="btn btn-default browseScriptFile" style="margin-top : 5px;"><i class="fa fa-folder-open"></i> {{Parcourir}}</a> ';
@@ -271,6 +324,7 @@ function addCmdToTable(_cmd) {
         tr += '<td>';
         if (is_numeric(_cmd.id)) {
             tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fa fa-cogs"></i></a> ';
+            tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Activer}}</a>';
         }
         tr += ' <a class="btn btn-default btn-xs cmdAction" data-action="copy" title="Dupliquer"><i class="fa fa-files-o"></i></a> ';
         tr += '<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i></td>';
@@ -284,9 +338,87 @@ function addCmdToTable(_cmd) {
 
             
 
-//    }
-//    else if (_cmd.configuration['subtype'] == 'anim') {
-//  }
+    }
+    else if (_cmd.configuration['anim'] == 'yes') {
+
+
+        var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '" >';
+        tr += '<td>';
+        tr += '<span class="cmdAttr" data-l1key="id"></span>';
+        tr += '<span class="cmdAttr" style="display : none;" data-l1key="type" ></span>';
+        tr += '<span class="cmdAttr" style="display : none;" data-l1key="subType" ></span>';
+        tr += '<span class="cmdAttr" style="display : none;" data-l1key="configuration" data-l2key="anim" ></span>';
+        tr += '</td>';
+        tr += '<td>';
+        tr += '<div class="col-sm-6">';
+        tr += '<input class="cmdAttr form-control input-sm" data-l1key="name">';
+        tr += '</div>';
+        tr += '</td>';
+        tr += '<td>';
+        tr += '<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="model" style="margin-top : 5px;" >';
+        tr += '<option value="Taichi">{{Taichi}}</option>';
+        tr += '<option value="Satori">{{Satori}}</option>';
+        tr += '<option value="CyberSoldier">{{Cyber}}</option>';
+        tr += '</select>';
+        tr += '</td>';
+        tr += '<td><input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="look">';
+        tr += '</td>';
+        tr += '<td><input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="status" placeholder="1" >';
+        tr += '</td>';
+        tr += '<td><input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="animation">';
+        tr += '</td>';
+        tr += '<td><textarea style="height : 45px;" class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="parameter"></textarea>';
+        tr += '</td>';
+        tr += '<td>';
+        if (is_numeric(_cmd.id)) {
+            tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fa fa-cogs"></i></a> ';
+            tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Play}}</a>';
+        }
+        tr += ' <a class="btn btn-default btn-xs cmdAction" data-action="copy" title="Dupliquer"><i class="fa fa-files-o"></i></a> ';
+        tr += '<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i></td>';
+
+        tr += '</tr>';
+
+        //_cmd.type = 'action';
+        //_cmd.subType = 'message';
+        $('#table_cmdAnims tbody').append(tr);
+        $('#table_cmdAnims tbody tr:last').setValues(_cmd, '.cmdAttr');
+        if (_cmd.name != undefined) {
+
+            var _myeq = jeedom.eqLogic.byId(_cmd.eqLogic_id);
+
+            jeedom.eqLogic.byId({
+                id: _cmd.eqLogic_id,
+                error: function (error) {
+                    $('#div_alert').showAlert({ message: error.message, level: 'danger' });
+                },
+                success: function (equip) {
+
+                    if (_cmd.name == equip.configuration['anim_warn'])
+                        $('#sel_anim_warn').append('<option selected value="' + _cmd.name + '">' + _cmd.name + '</option>');
+                    else
+                        $('#sel_anim_warn').append('<option value="' + _cmd.name + '">' + _cmd.name + '</option>');
+                    if (_cmd.name == equip.configuration['anim_start'])
+                        $('#sel_anim_start').append('<option selected value="' + _cmd.name + '">' + _cmd.name + '</option>');
+                    else
+                        $('#sel_anim_start').append('<option value="' + _cmd.name + '">' + _cmd.name + '</option>');
+                    if (_cmd.name == equip.configuration['anim_idle'])
+                        $('#sel_anim_idle').append('<option selected value="' + _cmd.name + '">' + _cmd.name + '</option>');
+                    else
+                        $('#sel_anim_idle').append('<option value="' + _cmd.name + '">' + _cmd.name + '</option>');
+                    if (_cmd.name == equip.configuration['anim_say'])
+                        $('#sel_anim_say').append('<option selected value="' + _cmd.name + '">' + _cmd.name + '</option>');
+                    else
+                        $('#sel_anim_say').append('<option value="' + _cmd.name + '">' + _cmd.name + '</option>');
+
+
+                }
+            });
+
+
+           
+        }
+    }
     
 }
 

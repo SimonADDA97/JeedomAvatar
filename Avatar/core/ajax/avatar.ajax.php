@@ -89,6 +89,40 @@ try {
         ajax::success($path);
     }
 
+	if (init('action') == 'getVoice') {
+        //$path = init('path');
+		
+
+        $return = array(
+            'content' => file_get_contents($path),
+            'extension' => $pathinfo['extension']
+        );
+        ajax::success($return);
+    }
+
+	if (init('action') == 'say') {
+        //$path = init('path');
+		
+		$eqid = init('eqid');
+        $eqLogic = eqLogic::byId($eqid);		
+		
+		$message = init('message');
+		$reply = $eqLogic->callAvatarSpeech("say/" . $message);
+		
+        ajax::success($reply);
+    }
+
+	if (init('action') == 'synchro') {
+        //$path = init('path');
+		
+		$eqid = init('eqid');
+        $eqLogic = eqLogic::byId($eqid);		
+		
+		$reply = $eqLogic->callAvatarReloadConfig();
+		
+        ajax::success($reply);
+    }
+
     throw new Exception(__('Aucune methode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */
 } catch (Exception $e) {

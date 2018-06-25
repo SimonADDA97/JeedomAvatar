@@ -10,7 +10,8 @@ require_once dirname(__FILE__) . "/../../../../core/php/core.inc.php";
 function getVoiceConfig()
 {
 	global $eqLogic;
-	$eqparams = "Room=". $eqLogic->getConfiguration('Room').";";
+	$eqparams = "avatarID=". $eqLogic->getName().";";
+	$eqparams .= "Room=". $eqLogic->getConfiguration('Room').";";
 	$eqparams .= "Roomd=". $eqLogic->getConfiguration('Roomd').";";
 	$eqparams .= "Level=". $eqLogic->getConfiguration('Level').";";
 	$eqparams .= "Levela=". $eqLogic->getConfiguration('Levela').";";
@@ -28,9 +29,16 @@ function getVoiceConfig()
 function getAnimConfig()
 {
 	global $eqLogic;
-	$eqparams = "VideoMode=". $eqLogic->getConfiguration('video_mode').";";
-	$eqparams = "StartModel=". $eqLogic->getConfiguration('start_model').";";
+	$eqparams = "PosX=". $eqLogic->getConfiguration('PosX').";";
+	$eqparams .= "PosY=". $eqLogic->getConfiguration('PosY').";";
+	$eqparams .= "SizeX=". $eqLogic->getConfiguration('SizeX').";";
+	$eqparams .= "SizeY=". $eqLogic->getConfiguration('SizeY').";";
+	$eqparams .= "anim_start=". $eqLogic->getConfiguration('anim_start').";";
+	$eqparams .= "anim_idle=". $eqLogic->getConfiguration('anim_idle').";";
+	$eqparams .= "anim_say=". $eqLogic->getConfiguration('anim_say').";";
+	$eqparams .= "anim_warn=". $eqLogic->getConfiguration('anim_warn').";";
 	$eqparams .= "AnimEnabled=". $eqLogic->getConfiguration('animenabled').";";
+	$eqparams .= "ShowForm=". $eqLogic->getConfiguration('showform').";";
 	$eqparams .= "ETHPort=". $eqLogic->getConfiguration('AnimPort');
 	
 	return ($eqparams);
@@ -57,7 +65,7 @@ function processCommand($query,$cmdtype)
 }
 
 
-function getGrammarList($sub)
+function getGrammarList($filetype)
 {
 	$glist="";
 	global $eqLogic;
@@ -68,16 +76,34 @@ function getGrammarList($sub)
 
 		if ( $cmd->getConfiguration("grammar","") == "yes" )  
 		{
-			if ( $cmd->getConfiguration("status","") == "1" )  
+			if ( $cmd->getConfiguration("filetype","") == $filetype )
 			{
-				if ( $sub == "" )
-					$glist .= $cmd->getName().";";
+				$glist .= $cmd->getName().";";
+
 			}
-			else
-			{
-				if ( $sub != "" )
-					$glist .= $cmd->getName().";";
-			}
+		}
+	}	
+
+	return ($glist);
+}
+
+
+function getAnimList()
+{
+	$glist="";
+	global $eqLogic;
+
+	$cmds = cmd::byEqLogicId($eqLogic->getId());
+
+	foreach ($cmds as $cmd){
+
+		if ( $cmd->getConfiguration("anim","") == "yes" )  
+		{
+
+			$glist .= '{"name":"'. $cmd->getName().'" , "model" : "'.$cmd->getConfiguration("model","").'"';
+			$glist .= ' , "look":"'. $cmd->getConfiguration("look","").'" , "animation" : "'.$cmd->getConfiguration("animation","").'"';
+			$glist .= ' , "parameters":"'. $cmd->getConfiguration("parameter","").'" };';
+			
 		}
 	}	
 
@@ -107,7 +133,7 @@ $granted="unknown";
 $returnOK = [];
 $returnOK['error']="0";
 
-// Authenticate Kodi
+// Authenticate Client
 
 if (init('apikey') =="")
 {
@@ -158,13 +184,19 @@ switch (init('func')){
 	
 	case "listgrammar":
 	
-		$grammarlist = getGrammarList("");
+		$grammarlist = getGrammarList("grammar");
 		echo $grammarlist;
 	break;
 
 	case "listsubgrammar":
 	
-		$grammarlist = getGrammarList("true");
+		$grammarlist = getGrammarList("subgrammar");
+		echo $grammarlist;
+	break;
+
+	case "listinclude":
+	
+		$grammarlist = getGrammarList("sharedgrammar");
 		echo $grammarlist;
 	break;
 
@@ -186,6 +218,12 @@ switch (init('func')){
 	
 		$config = getAnimConfig();
 		echo $config;
+	break;
+
+	case "listanims":
+	
+		$animlist = getAnimList();
+		echo $animlist;
 	break;
 
 	case "process":

@@ -88,8 +88,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<i class='fa fa-cogs eqLogicAction pull-right cursor expertModeVisible' data-action='configure'></i>
 			<a class="btn btn-xs btn-default pull-right eqLogicAction" data-action="copy"><i class="fa fa-files-o"></i> {{Dupliquer}}</a>
 		</legend>
+		
 		<a class="btn btn-success eqLogicAction pull-right" data-action="save"><i class="fa fa-check-circle"></i> {{Sauvegarder la configuration}}</a>
 		<a class="btn btn-danger eqLogicAction pull-right" data-action="remove"><i class="fa fa-minus-circle"></i> {{Supprimer l'équipement}}</a>
+		<a class="btn btn-primary pull-right" id="bt_synchronize"><i class="fa fa-check-circle"></i> {{Synchroniser l'équipement}}</a>
 
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> {{Configuration}}</a></li>
@@ -172,13 +174,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="AnimPort" placeholder="{{Port}}" />
 							</div>
 						</div>
-						
-						<div class="form-group">
-							<div class="col-sm-3">
-								<a id="btn_testAvatarserver" class="btn btn-success eqLogicAction pull-right" ><i class="fa fa-check-circle"></i> {{Tester la connection}}</a>
-							</div>
-						</div>				
-				
+
 
 					</fieldset>
 				</form>
@@ -230,17 +226,17 @@ $eqLogics = eqLogic::byType($plugin->getId());
 					  </div>
 					</div> 
 
-				<br>
+				<legend>{{Liste des grammaires}}</legend>
+
 					<div class="row">
 					<div class="col-sm-12">
-						<a class="btn btn-success btn-sm pull-right" id="bt_addGrammar"><i class="fa fa-plus-circle"></i> {{Ajouter une grammaire}}</a>
 
 						<table id="table_recogrammar" class="table table-bordered table-condensed">
 							<thead>
 								<tr>
 									<th style="width: 50px;">#</th>
 									<th>{{Grammaire}}</th>
-									<th>{{Status initial}}</th>
+									<th>{{Type}}</th>
 									<th>{{Contenu}}</th>
 									<th>{{Action}}</th>
 								</tr>
@@ -250,7 +246,14 @@ $eqLogics = eqLogic::byType($plugin->getId());
 						</table>
 						</div> 
 					</div> 
-				
+
+					<div class="form-group row">
+						<div class="col-sm-12">
+						<a class="btn btn-success btn-sm pull-left" id="bt_addGrammar"><i class="fa fa-plus-circle"></i> {{Ajouter une grammaire}}</a>
+						</div>	
+					</div>
+					<br/>
+					<br/>
 			</div>
 
 
@@ -259,15 +262,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<br/>
 					<div class="form-group row">
 					<label class="control-label col-sm-2">{{Configuration de la parole}}</label>
-					
-					
 						<div class="col-sm-8">
 								<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="voiceenabled" checked="true" />{{Activer}}</label>
 						</div>
-
-
 					</div>
-
 
 					<div class="form-group row">
 						<label class="col-sm-2 control-label">{{Voix}}</label>
@@ -275,53 +273,89 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							<input id="sel_voice" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Voice" placeholder="{{Microsoft Hortense Desktopge}}" />
 						</div>
 						<div class="col-sm-2">
-							<a id="btn_choosevoice" class="btn btn-success eqLogicAction pull-right" ><i class="fa fa-check-circle"></i> {{Choisir une voix}}</a>
+							<a id="btn_choosevoice" class="btn btn-success eqLogicAction pull-right" style="display: none;"><i class="fa fa-check-circle"></i> {{Choisir une voix}}</a>
 						</div>
 					</div>
 
-			
+					<div class="form-group row">
+						<div class="col-sm-3">
+							<textarea id="texttosay" style="height : 45px;" type="text" class="form-control"  placeholder="{{Ceci est un test.}}" >{{Ceci est un test.}}</textarea>
+						</div>
+						<div class="col-sm-2">
+							<a class="btn btn-success btn-sm pull-left" id="bt_textosay"><i class="fa fa-plus-circle"></i> {{Dire}}</a>
+						</div>
+					</div>
 			</div>
 		
 
 			<div role="tabpanel" class="tab-pane" id="cmdAnims" >
-
 				
-					<br/>
-
 					<div class="form-group row">
-						<label class="control-label col-sm-2">{{Animations}}</label>
+						<label class="control-label col-sm-2">{{Configuration des animations}}</label>
 						<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="animenabled" checked="true" />{{Activer}}</label>
 					</div>
 
 					<div class="form-group row">
-
-					<div class="form-group">
-						<label class="col-sm-2 control-label">{{Mode par défaut d'affichage}}</label>
-						<div class="col-sm-2">
-							<select id="video_mode" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="video_mode" >
-								<option value="" >{{Overlay}}</option>
-								<option value="" >{{Plein écran}}</option>
-								<option value="" >{{Stream uniquement}}</option>
-							</select>
-						</div>
-
-						<label class="col-sm-2 control-label">{{Model par défaut}}</label>
-						<div class="col-sm-2">
-							<select id="start_model" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="start_model" >
-								<option value="" >Taichi</option>
-							</select>
-						</div>
-					</div>	
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{Position a l'écran, X : }}</label>
+							<div class="col-sm-2">
+								<input id="PosX" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="PosX" placeholder="900" />
+							</div>
+							<label class="col-sm-2 control-label">{{Y : }}</label>
+							<div class="col-sm-2">
+								<input id="PosY" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="PosY" placeholder="400" />
+							</div>
+						</div>	
 					</div>
 
+					<div class="form-group row">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{Taille de la projection, Largeur : }}</label>
+							<div class="col-sm-2">
+								<input id="PosX" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="SizeX" placeholder="900" />
+							</div>
+							<label class="col-sm-2 control-label">{{Hauteur : }}</label>
+							<div class="col-sm-2">
+								<input id="PosY" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="SizeY" placeholder="400" />
+							</div>
+							<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="showform" checked="false" />{{Afficher les contours}}</label>
+
+						</div>	
+					</div>
+
+					<legend>{{Animations par défaut}}</legend>
+					<div class="form-group row">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{Apparition : }}</label>
+							<div class="col-sm-2">
+								<select id="sel_anim_start" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="anim_start" >
+									<option value="">{{Aucune}}</option>
+								</select>
+							</div>
+
+							<label class="col-sm-2 control-label">{{Attente : }}</label>
+							<div class="col-sm-2">
+								<select id="sel_anim_idle" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="anim_idle" >
+									<option value="">{{Aucune}}</option>
+								</select>
+							</div>
+							<label class="col-sm-2 control-label">{{Parler : }}</label>
+							<div class="col-sm-2">
+								<select id="sel_anim_say" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="anim_say" >
+									<option value="">{{Aucune}}</option>
+								</select>
+							</div>
+							<label class="col-sm-2 control-label">{{Annonce : }}</label>
+							<div class="col-sm-2">
+								<select id="sel_anim_warn" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="anim_warn" >
+									<option value="">{{Aucune}}</option>
+								</select>
+							</div>						</div>	
+					</div>
+
+					<legend>{{Liste des animations}}</legend>
 
 					<div class="form-group">		
-					<br/>
-					<div class="form-group row">
-					<div class="col-sm-12">
-						<a class="btn btn-success btn-sm pull-right" id="bt_addAnimation"><i class="fa fa-plus-circle"></i> {{Ajouter une grammaire}}</a>
-					</div>	
-					</div>
 						<table id="table_cmdAnims" class="table table-bordered table-condensed">
 
 							<thead>
@@ -329,7 +363,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<th>#</th>
 									<th>{{Nom}}</th>
 									<th>{{Model}}</th>									
-									<th>{{Animations}}</th>
+									<th>{{Look}}</th>									
+									<th>{{Status}}</th>									
+									<th>{{Animation}}</th>
+									<th>{{Parametres}}</th>
+									<th>{{Action}}</th>
 								</tr>
 							</thead>					
 
@@ -337,6 +375,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							</tbody>
 
 						</table>
+						<div class="form-group row">
+							<div class="col-sm-12">
+							<a class="btn btn-success btn-sm pull-left" id="bt_addAnimation"><i class="fa fa-plus-circle"></i> {{Ajouter une animation}}</a>
+							</div>	
+						</div>
+						<br/>
+						<br/>
 
 					</div>
 

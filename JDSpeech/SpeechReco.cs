@@ -3,13 +3,14 @@ using System.IO;
 //using System.Speech.Recognition;
 using System.Speech.Recognition;
 using System.Speech.Recognition.SrgsGrammar;
+using System.Collections.Generic;
 
 namespace JDSpeech
 {
     class SpeechReco
     {
         SpeechRecognitionEngine recognizer;
-
+        DictationGrammar customDictationGrammar;
         Jeedom jeedomClient;
         
         public Speaker mySpeaker;
@@ -25,8 +26,10 @@ namespace JDSpeech
         public string leveld="";
         public string levela="";
         public string cultureinfo = "";
+        public string avatarID = "";
         public bool subgrammarenabled=false;
 
+        public Dictionary<string,string> SharedGrammars;
 
         public SpeechReco()
         {
@@ -69,6 +72,7 @@ namespace JDSpeech
             cultureinfo = myConfig.getstring("CultureInfo", "fr - FR");
             jeedomURL = myConfig.getstring("JeedomURL", "");
             jeedomUID = myConfig.getstring("JeedomUID", "");
+            avatarID = myConfig.getstring("avatarID", "");
             room = myConfig.getstring("Room", "");
             roomd = myConfig.getstring("Roomd", "");
             level = myConfig.getstring("Level", "");
@@ -114,6 +118,22 @@ namespace JDSpeech
             SrgsDocument sgrsDoc;
             string stringgrammar = "";
             subgrammarenabled = false;
+
+            Console.WriteLine("Load Shared grammar :");
+
+            SharedGrammars = new Dictionary<string, string>();
+
+            string[] sharedgrammarFiles = jeedomClient.getSharedGrammars();
+            foreach (string grammarFile in sharedgrammarFiles)
+            {
+                if (grammarFile != "")
+                {
+                    SharedGrammars[grammarFile]  = jeedomClient.getGrammarFile(grammarFile);
+ 
+                    Console.WriteLine(" - {0}", grammarFile);
+                }
+            }
+
             Console.WriteLine("Load Active grammar :");
 
             string[] grammarFiles = jeedomClient.getGrammars();
@@ -122,6 +142,7 @@ namespace JDSpeech
                 if (grammarFile != "")
                 { 
                     stringgrammar = jeedomClient.getGrammarFile(grammarFile);
+                    stringgrammar = replaceInclude(stringgrammar);
                     sgrsDoc = new SrgsDocument(System.Xml.XmlReader.Create(new StringReader(stringgrammar)));
 
                     testGrammar = new Grammar(sgrsDoc);
@@ -141,6 +162,7 @@ namespace JDSpeech
                 if (grammarFile != "")
                 {
                     stringgrammar = jeedomClient.getGrammarFile(grammarFile);
+                    stringgrammar = replaceInclude(stringgrammar);
                     sgrsDoc = new SrgsDocument(System.Xml.XmlReader.Create(new StringReader(stringgrammar)));
 
                     testGrammar = new Grammar(sgrsDoc);
@@ -151,9 +173,41 @@ namespace JDSpeech
                     Console.WriteLine(" - {0}", testGrammar.Name);
                 }
             }
+
         }
 
+        public string replaceInclude(string stringgrammar)
+        {
+            int startoffset = 0;
+            int endoffset = 0;
+            string includename = "";
 
+            do
+            {
+                startoffset = stringgrammar.IndexOf("<include>");
+
+                if (startoffset > 0 )
+                {
+                    endoffset = stringgrammar.IndexOf("</include>", startoffset);
+                    if (endoffset < 0)
+                    {
+                        Console.WriteLine(" ERROR parsing Include");
+                        return("");
+                    }
+                    includename = stringgrammar.Substring(startoffset + 9, endoffset - startoffset - 9);
+                    if ( !SharedGrammars.ContainsKey(includename) )
+                    {
+                        Console.WriteLine(" ERROR could not found Shared Grammar  {0}.", includename);
+                        return ("");
+                    }
+                    stringgrammar = stringgrammar.Substring(0, startoffset) + SharedGrammars[includename] + stringgrammar.Substring( endoffset + 10 );
+                }
+            }
+            while (startoffset > 0);
+
+
+            return (stringgrammar);
+        }
         public void EnableGrammar(string grammarname)
         {
             foreach (var grammar in recognizer.Grammars)
@@ -168,6 +222,14 @@ namespace JDSpeech
             foreach (var grammar in recognizer.Grammars)
             {
                 if (grammar.Name == grammarname)
+                    grammar.Enabled = false;
+            }
+        }
+
+        public void DisableAllGrammar()
+        {
+            foreach (var grammar in recognizer.Grammars)
+            {
                     grammar.Enabled = false;
             }
         }
@@ -250,6 +312,9 @@ namespace JDSpeech
                 if (rr_type == "jeedom_info")
                     rr_infos = jeedomClient.send(rr_command, "info");
 
+            //    if (rr_type == "speech_notes")
+            //        rr_infos = jeedomClient.send(rr_command, "info");
+
                 if ( Neededinfos(rr_infos,rr_reply) & (rr_reply != "") )
                 {
                     rr_reply = AddKeyWords(rr_reply, rr_infos);
@@ -279,6 +344,22 @@ namespace JDSpeech
                 }
 
             }
+        }
+
+        public void RunDictation()
+        {
+
+            //DisableAllGrammar();
+            /*
+            Pause();
+
+            DictationGrammar dg = new DictationGrammar();
+
+            recognizer.LoadGrammar(dg);
+
+            recognizer.RecognizeAsync();
+            */
+
         }
 
         public bool Neededinfos(string infosreceived , string replyphrase)
@@ -315,6 +396,7 @@ namespace JDSpeech
             phrasecomplete = phrasecomplete.Replace("{leveld}", leveld);
             phrasecomplete = phrasecomplete.Replace("{room}", room);
             phrasecomplete = phrasecomplete.Replace("{roomd}", roomd);
+            phrasecomplete = phrasecomplete.Replace("{avatar}", avatarID);
 
 
             return (phrasecomplete);

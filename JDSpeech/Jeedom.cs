@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net.Http;
 
 namespace JDSpeech
@@ -30,6 +26,14 @@ namespace JDSpeech
             string urlreq = urlapi + "uid=" + uid + "&func=process&type=" + type + "&cmd=" + cmds ;
             string responseString = client.GetStringAsync(urlreq).Result;
             return (responseString);
+        }
+
+        public string[] getSharedGrammars()
+        {
+            string urlreq = urlapi + "uid=" + uid + "&func=listinclude";
+            string responseString = client.GetStringAsync(urlreq).Result;
+            string[] grammarFiles = responseString.Split(';');
+            return (grammarFiles);
         }
 
         public string[] getGrammars()
