@@ -21,7 +21,7 @@ $RECYCLE.BIN/
 .vs/*
 packages/
 JDSpeech/obj/
-JDSpeech/bin/Debug/
+JDSpeech/bin/
 JDSpeech/Ressources/
 
 # =========================
