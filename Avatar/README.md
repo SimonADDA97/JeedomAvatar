@@ -1,5 +1,6 @@
 # avatar
-Initial Commit
+
+Projet stoppé et transféré sur home assistant
 
 Plug In Avatar
 
